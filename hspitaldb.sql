@@ -39,7 +39,11 @@ Roomtype varchar(23),
   result varchar(45),
   );
   insert into hospital.Reports(TestID,PatientID,testname,result) values(1,011, 'screening','result');
-  
+   select* from  patient 
+order by names Desc,
+select *from patient
+order by id Asc,
+show databases,
   
   
   
