@@ -27,12 +27,13 @@ coursecredithours int);
 
 
 
-INSERT INTO student(id, name, email, age, marks)
+INSERT INTO student (id, name, email, age, marks)
 VALUES
 (101, 'rukhsaar', 'raha@gmail.com', 21, 78),
 (102, 'samu', 'samu@gmail.com', 24, 89),
 (103, 'zoya', 'zoyashah@mail.com', 33, 43),
-(104, 'inarah', 'inara@gmail.com', 19, 94);
+(104, 'inarah', 'inara@gmail.com', 18, 94);
+
 
 select * from student where marks between 70 and 94;
 
@@ -49,14 +50,7 @@ select marks from student;
 select max(marks) from student;
 
 select avg(marks) from student; 
- 
-
-INSERT INTO student (id, name, email, age, marks)
-VALUES
-(101, 'rukhsaar', 'raha@gmail.com', 21, 78),
-(102, 'samu', 'samu@gmail.com', 24, 89),
-(103, 'zoya', 'zoyashah@mail.com', 33, 43),
-(104, 'inarah', 'inara@gmail.com', 18, 94);
+  select * from student;
 
 
 
