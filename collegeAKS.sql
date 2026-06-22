@@ -74,4 +74,8 @@ where marks =95;
  show databases;
  TRUNCATE TABLE studentA;
 DROP TABLE marks;
+ALTER TABLE studentA
+MODIFY marks BIGINT;
+SELECT name, marks, rollno, grade,city FROM studentA;
+
 SELECT name, marks, city FROM studentA;
