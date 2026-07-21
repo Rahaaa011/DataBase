@@ -1,0 +1,197 @@
+create database LibraryManagementSystem;
+USE LibraryManagementSystem;
+CREATE TABLE Book
+(
+    BookID INT PRIMARY KEY,
+    Title VARCHAR(100),
+    Category VARCHAR(50),
+    Price DECIMAL(10,2)
+);
+INSERT INTO Book
+VALUES
+(101,'Database Systems','Computer',1200),
+(102,'Python Basics','Computer',950),
+(103,'Data Science','Computer',1500),
+(104,'English Grammar','Language',700),
+(105,'Physics','Science',1300);
+
+CREATE TABLE Student
+(
+    StudentID INT PRIMARY KEY,
+    StudentName VARCHAR(50),
+    Department VARCHAR(30),
+    City VARCHAR(50)
+);
+
+
+INSERT INTO Student
+VALUES
+(1,'Ali','CS','Abbottabad'),
+(2,'Sara','SE','Islamabad'),
+(3,'Ahmed','CS','Peshawar'),
+(4,'Ayesha','IT','Abbottabad'),
+(5,'Bilal','CS','Haripur');
+
+
+
+CREATE TABLE IssueBook
+(
+    IssueID INT PRIMARY KEY,
+    StudentID INT,
+    BookID INT,
+    IssueDate DATE,
+    FOREIGN KEY(StudentID)
+    REFERENCES Student(StudentID),
+    FOREIGN KEY(BookID)
+    REFERENCES Book(BookID)
+);
+
+
+
+INSERT INTO IssueBook
+VALUES
+(1,1,101,'2026-05-10'),
+(2,2,104,'2026-05-11'),
+(3,3,102,'2026-05-12'),
+(4,1,105,'2026-05-13');
+
+
+SELECT *
+FROM Book
+WHERE Category IN ('Computer','Science');
+
+SELECT *
+FROM Student
+WHERE City != 'Abbottabad';
+
+SELECT *
+FROM Book
+ORDER BY Price DESC;
+
+SELECT *
+FROM Book
+LIMIT 3;
+
+SELECT Category,
+COUNT(*) AS TotalBooks
+FROM Book
+GROUP BY Category;
+
+SELECT Department,
+COUNT(*) AS TotalStudents
+FROM Student
+GROUP BY Department
+HAVING COUNT(*) > 1;
+
+SELECT *
+FROM ComputerBooks;
+
+SELECT Student.StudentName,
+Book.Title
+FROM Student
+INNER JOIN IssueBook
+ON Student.StudentID=IssueBook.StudentID
+
+INNER JOIN Book
+ON Book.BookID=IssueBook.BookID;
+
+
+SELECT Student.StudentName,
+Book.Title
+FROM Student
+
+LEFT JOIN IssueBook
+ON Student.StudentID=IssueBook.StudentID
+
+LEFT JOIN Book
+ON Book.BookID=IssueBook.BookID;
+SELECT
+S1.StudentName AS Student,
+S2.StudentName AS Supervisor
+
+FROM Student S1
+
+LEFT JOIN Student S2
+ON S1.SupervisorID=S2.StudentID;
+
+SELECT StudentName
+FROM Student
+
+WHERE StudentID IN
+(
+SELECT StudentID
+FROM IssueBook
+);
+
+
+SELECT Title
+FROM Book
+
+WHERE BookID NOT IN
+(
+SELECT BookID
+FROM IssueBook
+);
+
+SELECT StudentName
+FROM Student S
+WHERE EXISTS
+(
+SELECT *
+
+FROM IssueBook I
+
+WHERE S.StudentID=I.StudentID
+);
+
+SELECT
+Title,
+Price,
+
+CASE
+WHEN Price>1000 THEN 'Expensive'
+ELSE 'Cheap'
+END AS PriceStatus
+FROM Book;
+
+DELIMITER $$
+
+CREATE TRIGGER AfterBookUpdate
+
+AFTER UPDATE
+
+ON Book
+
+FOR EACH ROW
+BEGIN
+INSERT INTO BookLog
+VALUES
+(
+OLD.BookID,
+OLD.Title,
+NOW()
+);
+END$$
+DELIMITER ;
+CREATE TABLE BookLog
+(
+BookID INT,
+Title VARCHAR(100),
+UpdatedOn DATETIME
+);
+
+DELIMITER $$
+
+CREATE PROCEDURE FirstFiveBooks()
+
+BEGIN
+
+
+
+SELECT *
+FROM Book
+LIMIT 5;
+
+END$$
+
+DELIMITER ;
